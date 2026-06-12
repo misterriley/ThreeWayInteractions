@@ -317,11 +317,7 @@ for pc = 1:min(2, size(pga_coefficients, 2))
     
     % Generate carpet plot of the tangent direction using the helper function
     dir_plot_filename = fullfile(output_dir, sprintf('%s_%s_pga_pc%d_direction_carpet_plot.png', dataset, task_name, pc));
-    max_val = max(abs(U_k), [], 'all');
-    clim_dir = [-1 1];
-    if max_val > 0 && ~isnan(max_val)
-        clim_dir = [-max_val, max_val];
-    end
+    clim_dir = [-0.4, 0.4];
     
     plot_masked_carpet(U_k, unique_networks, ...
         sprintf('%s %s: PC%d Tangent Direction (Eigenvector)', upper(dataset), upper(task_name), pc), ...
