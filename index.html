@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Normative Brain Dynamics Dashboard - HCP Cohort</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- MathJax for rendering LaTeX equations -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fa-solid fa-brain logo-icon"></i>
+                    <span>NeuroFlow</span>
+                </div>
+                <div class="tag">HCP COHORT</div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-label">HCP Cohort</div>
+                <ul class="task-list" id="hcp-task-list">
+                    <!-- Loaded dynamically via app.js -->
+                </ul>
+                <div class="nav-label" style="margin-top: 24px;">IMAGEN Cohort</div>
+                <ul class="task-list" id="imagen-task-list">
+                    <!-- Loaded dynamically via app.js -->
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="footer-title">Normative Modulations</div>
+                <div class="footer-desc">Timeseries Coskewness & Wasserstein PGA Dashboard</div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1 id="current-task-title">Loading...</h1>
+                    <p class="subtitle">Normative modulate profiles and geodesic variations</p>
+                </div>
+                <div class="header-right" id="metadata-container">
+                    <!-- Loaded dynamically via app.js -->
+                </div>
+            </header>
+
+            <!-- Navigation Tabs -->
+            <div class="tabs-container">
+                <button class="tab-btn active" data-tab="tab-barycenter">
+                    <i class="fa-solid fa-circle-dot tab-icon"></i>Overview & Barycenter
+                </button>
+                <button class="tab-btn" data-tab="tab-pga">
+                    <i class="fa-solid fa-bezier-curve tab-icon"></i>Wasserstein PGA
+                </button>
+                <button class="tab-btn" data-tab="tab-triads">
+                    <i class="fa-solid fa-circle-nodes tab-icon"></i>3-Way Interactions
+                </button>
+                <button class="tab-btn" data-tab="tab-methodology">
+                    <i class="fa-solid fa-book tab-icon"></i>Methodology
+                </button>
+            </div>
+
+            <!-- Tab Content Area -->
+            <div class="tab-content-container">
+                
+                <!-- Tab 1: Barycenter Baseline -->
+                <div class="tab-content active" id="tab-barycenter">
+                    <div class="grid-2col">
+                        <!-- Barycenter Carpet Plot Card -->
+                        <div class="card glass-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Wasserstein Barycenter (Bootstrap-Corrected)</h3>
+                                <p class="card-subtitle">Stable connections (FWER <span class="math">p</span> < 0.05 Bonferroni corrected)</p>
+                            </div>
+                            <div class="card-body plot-body">
+                                <div class="img-container">
+                                    <img id="img-barycenter-carpet" src="" alt="Wasserstein Barycenter Carpet Plot">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Barycenter Lollipop Plot Card -->
+                        <div class="card glass-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Top 5 Barycenter Connections</h3>
+                                <p class="card-subtitle">Strongest baseline correlations in the cohort barycenter</p>
+                            </div>
+                            <div class="card-body plot-body">
+                                <div class="img-container">
+                                    <img id="img-barycenter-lollipop" src="" alt="Wasserstein Barycenter Lollipop Plot">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Strongest Connections Table Card -->
+                    <div class="card glass-card table-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Strongest Barycenter Baseline Connections</h3>
+                            <p class="card-subtitle">Top 5 functional connectivity links resolved by the Wasserstein barycenter</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Rank</th>
+                                            <th>Region A</th>
+                                            <th>Region B</th>
+                                            <th class="num-col">Correlation (r)</th>
+                                            <th class="num-col">Sign</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="barycenter-table-body">
+                                        <!-- Loaded dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Wasserstein PGA -->
+                <div class="tab-content" id="tab-pga">
+                    <!-- Scree Plot & PC Directions -->
+                    <div class="grid-2col mb-4">
+                        <div class="card glass-card flex-col">
+                            <div class="card-header">
+                                <h3 class="card-title">PGA Scree Plot</h3>
+                                <p class="card-subtitle">Variance explained by the top 10 principal geodesic components</p>
+                            </div>
+                            <div class="card-body plot-body flex-center">
+                                <div class="img-container max-h-350">
+                                    <img id="img-pga-scree" src="" alt="PGA Scree Plot">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card glass-card">
+                            <div class="card-header">
+                                <h3 class="card-title">PC1 & PC2 Geodesic Variations</h3>
+                                <p class="card-subtitle">Geodesic reconstruction heatmaps along PC1 and PC2</p>
+                            </div>
+                            <div class="card-body pga-geodesics-body">
+                                <div class="geodesic-plot-group">
+                                    <div class="geodesic-header">PC1 Geodesic Variation (-2σ to +2σ)</div>
+                                    <div class="img-container-horizontal">
+                                        <img id="img-pga-pc1-geodesic" src="" alt="PC1 Geodesic Variation">
+                                    </div>
+                                </div>
+                                <div class="geodesic-plot-group mt-3">
+                                    <div class="geodesic-header">PC2 Geodesic Variation (-2σ to +2σ)</div>
+                                    <div class="img-container-horizontal">
+                                        <img id="img-pga-pc2-geodesic" src="" alt="PC2 Geodesic Variation">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PC Eigenvectors (Tangent Directions) -->
+                    <div class="grid-2col">
+                        <div class="card glass-card">
+                            <div class="card-header">
+                                <h3 class="card-title">PC1 Tangent Direction (Eigenvector)</h3>
+                                <p class="card-subtitle">Sparse loadings resolved by Bonferroni thresholding</p>
+                            </div>
+                            <div class="card-body plot-body">
+                                <div class="img-container">
+                                    <img id="img-pga-pc1-direction" src="" alt="PC1 Direction Carpet Plot">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card glass-card">
+                            <div class="card-header">
+                                <h3 class="card-title">PC2 Tangent Direction (Eigenvector)</h3>
+                                <p class="card-subtitle">Sparse loadings resolved by Bonferroni thresholding</p>
+                            </div>
+                            <div class="card-body plot-body">
+                                <div class="img-container">
+                                    <img id="img-pga-pc2-direction" src="" alt="PC2 Direction Carpet Plot">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: 3-Way Interactions (Coskewness) -->
+                <div class="tab-content" id="tab-triads">
+                    <div class="grid-2col mb-4">
+                        <!-- Overall Triads Lollipop Card -->
+                        <div class="card glass-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Top 5 Three-Way Interactions (Overall)</h3>
+                                <p class="card-subtitle">Coordinated multi-network communication modes (including self-loops)</p>
+                            </div>
+                            <div class="card-body plot-body">
+                                <div class="img-container">
+                                    <img id="img-triads-lollipop" src="" alt="Top Triads Lollipop Plot">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Distinct Triads Lollipop Card -->
+                        <div class="card glass-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Top 5 Three-Way Interactions (Distinct Regions)</h3>
+                                <p class="card-subtitle">Pure cross-talk among three mutually different network regions</p>
+                            </div>
+                            <div class="card-body plot-body">
+                                <div class="img-container">
+                                    <img id="img-triads-distinct-lollipop" src="" alt="Top Distinct Triads Lollipop Plot">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CP Components Card -->
+                    <div class="card glass-card mb-4">
+                        <div class="card-header">
+                            <h3 class="card-title">Symmetric CP Tensor Components (Non-Gaussian Variance Explained)</h3>
+                            <p class="card-subtitle">Explanations of cohort's non-Gaussian variance accounted for by the 5 latent modes ($\% \text{ Variance} = \lambda_r^2 / \sum \lambda_k^2$)</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="cp-components-grid" id="cp-components-container">
+                                <!-- Loaded dynamically via app.js -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Search and Tables Controls -->
+                    <div class="controls-card glass-card mb-4">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <input type="text" id="triad-search-input" placeholder="Search by network (e.g. DMN, FP, SC)..." title="Filter triads by region name">
+                        </div>
+                        <div class="search-meta" id="search-results-meta">Showing top 10 interactions</div>
+                    </div>
+
+                    <!-- Triads Tables Stacked -->
+                    <div class="stacked-tables-container">
+                        <!-- Table 1: Overall Triads -->
+                        <div class="card glass-card table-card mb-4">
+                            <div class="card-header">
+                                <h3 class="card-title">Strongest Overall Interactions</h3>
+                                <p class="card-subtitle">Top 3-way modulations ($M_{abc}$ magnitude)</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Rank</th>
+                                                <th>Triad (Node A - B - C)</th>
+                                                <th class="num-col">Index ($M_{abc}$)</th>
+                                                <th class="num-col">Abs Influence</th>
+                                                <th class="num-col">% Variance Explained</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="overall-triads-table-body">
+                                            <!-- Loaded dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Table 2: Distinct Triads -->
+                        <div class="card glass-card table-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Strongest Cross-Network Interactions</h3>
+                                <p class="card-subtitle">Top 3-way interactions with all 3 nodes different</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Rank</th>
+                                                <th>Triad (Node A - B - C)</th>
+                                                <th class="num-col">Index ($M_{abc}$)</th>
+                                                <th class="num-col">Abs Influence</th>
+                                                <th class="num-col">% Variance Explained</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="distinct-triads-table-body">
+                                            <!-- Loaded dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Methodology -->
+                <div class="tab-content" id="tab-methodology">
+                    <div class="card glass-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Analysis Pipeline & Methodology</h3>
+                            <p class="card-subtitle">Detailed mathematical steps used to resolve connectivity and three-way interactions</p>
+                        </div>
+                        <div class="card-body methodology-content">
+                            <section class="method-section">
+                                <h4>1. Spatial Separation & Canonical Network Averaging</h4>
+                                <p>Timeseries signals are initially extracted from 268 region-of-interest (ROI) nodes across the brain. To reduce dimensionality and focus on systems-level communication, the nodes are mapped to 10 canonical networks defined by functional atlases:</p>
+                                <ul class="method-list">
+                                    <li><strong>DMN:</strong> Default Mode Network</li>
+                                    <li><strong>SC:</strong> Subcortical</li>
+                                    <li><strong>FP:</strong> Frontoparietal Control</li>
+                                    <li><strong>Mot:</strong> Motor</li>
+                                    <li><strong>MF:</strong> Medial Frontal</li>
+                                    <li><strong>VAs:</strong> Visual Association</li>
+                                    <li><strong>VI:</strong> Visual I</li>
+                                    <li><strong>VII:</strong> Visual II</li>
+                                    <li><strong>SAL:</strong> Salience</li>
+                                    <li><strong>CBL:</strong> Cerebellar</li>
+                                </ul>
+                                <p>For each participant, timeseries are first normalized (z-scored over space at each timepoint) and then normalized (z-scored over time at each node). The spatial averaging is performed by taking the mean timeseries across all ROIs belonging to each network, resulting in a <strong>10 &times; T</strong> timeseries representation.</p>
+                            </section>
+
+                            <section class="method-section">
+                                <h4>2. Individual Functional Connectivity (FC)</h4>
+                                <p>Pearson correlation is calculated on the 10 &times; T network-averaged timeseries for each subject, generating a symmetric positive-semidefinite <strong>10 &times; 10</strong> correlation matrix representing their pairwise functional connectivity:</p>
+                                <div class="equation">
+                                    $$\mathbf{C}_i = \text{corr}(\mathbf{Y}_i^T)$$
+                                </div>
+                            </section>
+
+                            <section class="method-section">
+                                <h4>3. Bures-Wasserstein Fréchet Mean (Barycenter)</h4>
+                                <p>Rather than using a simple element-wise arithmetic mean of correlation matrices—which washes out individual phase boundaries and boundaries on the PSD manifold—we compute the group-level baseline as the Fréchet mean under the <strong>Bures-Wasserstein Riemannian metric</strong>. This is solved via the Alvarez-Esteban fixed-point iteration:</p>
+                                <div class="equation">
+                                    $$\mathbf{S}_{k+1} = \mathbf{S}_k^{-1/2} \left( \frac{1}{N} \sum_{i=1}^N (\mathbf{S}_k^{1/2} \mathbf{C}_i \mathbf{S}_k^{1/2})^{1/2} \right)^2 \mathbf{S}_k^{-1/2}$$
+                                </div>
+                                <p>The converged covariance barycenter $\mathbf{S}$ is normalized to yield a true correlation matrix $\bar{\mathbf{\Sigma}}$. To ensure that only stable, statistically sound connections are visualized, we run 100 bootstrap iterations, compute the standard deviation of each connection, convert them to Z-scores (Bootstrap Ratios), and apply a Bonferroni-corrected Family-Wise Error Rate (FWER) threshold ($\alpha = 0.05$ across 45 comparisons):</p>
+                                <div class="equation">
+                                    $$Z_{\text{threshold}} = \sqrt{2} \text{erf}^{-1}(1 - \frac{0.05}{45}) \approx 3.29$$
+                                </div>
+                            </section>
+
+                            <section class="method-section">
+                                <h4>4. Principal Geodesic Analysis (PGA)</h4>
+                                <p>PGA extends PCA to Riemannian manifolds. We map each subject's functional connectivity matrix $\mathbf{C}_i$ to the tangent space at the Bures-Wasserstein barycenter $\bar{\mathbf{\Sigma}}$ via the logarithmic map:</p>
+                                <div class="equation">
+                                    $$\mathbf{X}_i = (\bar{\mathbf{\Sigma}}^{1/2} \mathbf{C}_i \bar{\mathbf{\Sigma}}^{1/2})^{1/2} - \bar{\mathbf{\Sigma}}$$
+                                </div>
+                                <p>To preserve the Riemannian metric, the symmetric tangent matrices $\mathbf{X}_i$ are vectorized into 55-dimensional vectors with off-diagonal entries scaled by $\sqrt{2}$. We perform standard PCA on these tangent vectors to extract principal components $\mathbf{u}_k$ (geodesic loadings). A bootstrap resampling (100 runs) and Bonferroni FWER threshold ($\alpha = 0.05$ across 55 features) are applied to yield sparse, stable loadings. The geodesic variations are reconstructed along each PC direction using the exponential map:</p>
+                                <div class="equation">
+                                    $$\mathbf{C}_{\text{rec}}(t) = (\mathbf{I} + \mathbf{Z}_t) \bar{\mathbf{\Sigma}} (\mathbf{I} + \mathbf{Z}_t), \quad \text{where } \mathbf{Z}_t = t \cdot \bar{\mathbf{\Sigma}}^{-1/2} \mathbf{X}_{\text{pc}} \bar{\mathbf{\Sigma}}^{-1/2}$$
+                                </div>
+                            </section>
+
+                            <section class="method-section">
+                                <h4>5. Group Symmetric CP Tensor Decomposition</h4>
+                                <p>To characterize three-way nonlinear dynamics, we compute the third-order coskewness tensor (10 &times; 10 &times; 10) for each subject:</p>
+                                <div class="equation">
+                                    $$\mathcal{T}_{ijk}^{(s)} = \frac{1}{T} \sum_{t=1}^T y_{i,t} \cdot y_{j,t} \cdot y_{k,t}$$
+                                </div>
+                                <p>To identify shared components across the cohort, we stack all subject tensors into a 4D array $\mathcal{X}$ of size 10 &times; 10 &times; 10 &times; N and perform a group-level symmetric Canonical Polyadic (CP) decomposition using Alternating Least Squares (ALS) with $R = 5$ latent modes, enforcing symmetry on the first three spatial modes:</p>
+                                <div class="equation">
+                                    $$\mathcal{X}_{ijks} \approx \sum_{r=1}^{R} \lambda_r \cdot v_{r,i} \cdot v_{r,j} \cdot v_{r,k} \cdot w_{r,s}$$
+                                </div>
+                                <p>This resolves spatial modes $\mathbf{v}_r \in \mathbb{R}^{10}$, cohort loading scores $\mathbf{w}_r \in \mathbb{R}^N$, and mode weights $\lambda_r$. We reconstruct the population target tensor as: $\mathcal{W}_{ijk} = \sum_{r=1}^{R} \lambda_r v_{r,i} v_{r,j} v_{r,k}$.</p>
+                            </section>
+
+                            <section class="method-section">
+                                <h4>6. De-whitening & Precision-Matrix Contraction (Adjusted Triad Index $M_{abc}$)</h4>
+                                <p>The raw third-order moments contain significant lower-order linear correlation dependencies. To isolate pure three-way nonlinear interactions, we filter the population tensor $\mathcal{W}$ by contracting it with the precision matrix $\mathbf{\Theta} = \bar{\mathbf{\Sigma}}^{-1}$ (the inverse of the Wasserstein barycenter baseline):</p>
+                                <div class="equation">
+                                    $$M_{abc} = \sum_{i=1}^{10} \sum_{j=1}^{10} \sum_{k=1}^{10} \mathcal{W}_{ijk} \cdot \mathbf{\Theta}_{ia} \cdot \mathbf{\Theta}_{jb} \cdot \mathbf{\Theta}_{kc}$$
+                                </div>
+                                <p>This contraction mathematically represents a <strong>de-whitening transformation</strong>. By projecting the joint third-order moments through the inverse covariance, we remove lower-order Gaussian correlation effects. This is mathematically equivalent to computing the expectation of multivariate **Hermite polynomials** of degree 3, which are orthogonal expansions that adjust skewness for the covariance structure, ensuring that only pure, non-linear three-way modulations are ranked.</p>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Inject consolidated results data -->
+    <script src="assets/data/results.js"></script>
+    <!-- Frontend Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
