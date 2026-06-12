@@ -1,0 +1,9 @@
+Possible interpretation:
+
+A small number of high-amplitude "braking" events that originate in the MF and DMN (high positive skewness).
+A small number of high-amplitude "action" events that originate in Mot (high positive skewness). 
+Motor events and cerebellar events are associated with high variance in the MF - could be a marker of vigilance for stopping?
+
+High MF activation associated with strong Mot-CBL covariance. If we interpret high MF as braking, then this means during a "braking" event, Mot and CBL are more strongly correlated than during other times. 
+
+Next to check: are the braking events (very high MF or DMN) happening at the same time as stop trials? Are the action events (very high CBL or Mot) happening at the same time as go trials? 

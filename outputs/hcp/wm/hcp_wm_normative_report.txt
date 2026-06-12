@@ -1,0 +1,57 @@
+============================================================
+NORMATIVE PROFILE REPORT: HCP WM
+============================================================
+
+Data Source:       HCP dataset
+Analysis Time:     2026-06-12 11:32:04
+Computation Time:  7.64 seconds
+
+------------------------------------------------------------
+CP TENSOR BARYCENTER COMPONENTS (NON-GAUSSIAN VARIANCE):
+------------------------------------------------------------
+Component 1: lambda = 27.507126 (45.59% variance explained)
+Component 2: lambda = 16.207548 (15.83% variance explained)
+Component 3: lambda = 16.062508 (15.54% variance explained)
+Component 4: lambda = 14.874373 (13.33% variance explained)
+Component 5: lambda = 12.695838 (9.71% variance explained)
+
+------------------------------------------------------------
+STRONGEST ELEMENTS OF BURES-WASSERSTEIN BARYCENTER:
+------------------------------------------------------------
+1. VAs - VII: r = 0.576530
+2. VAs - MF: r = -0.536344
+3. VII - Mot: r = -0.509508
+4. VAs - DMN: r = -0.454115
+5. Mot - FP: r = -0.434139
+
+------------------------------------------------------------
+STRONGEST 3-WAY INTERACTIONS (ADJUSTED TRIAD INDEX M_abc):
+------------------------------------------------------------
+Rank Node A                    Node B                    Node C                    M_abc        Abs(M_abc)  
+------------------------------------------------------------
+1    Mot                       Mot                       Mot                       7.801468     7.801468    
+2    Mot                       Mot                       SAL                       4.982405     4.982405    
+3    DMN                       DMN                       DMN                       3.812949     3.812949    
+4    Mot                       Mot                       CBL                       3.381949     3.381949    
+5    Mot                       SAL                       SAL                       3.182119     3.182119    
+6    DMN                       Mot                       Mot                       2.959820     2.959820    
+7    MF                        Mot                       Mot                       -2.705395    2.705395    
+8    DMN                       DMN                       CBL                       2.683178     2.683178    
+9    DMN                       DMN                       Mot                       2.633521     2.633521    
+10   MF                        MF                        Mot                       2.373824     2.373824    
+
+------------------------------------------------------------
+STRONGEST DISTINCT 3-WAY INTERACTIONS (ALL 3 NODES DIFFERENT):
+------------------------------------------------------------
+Rank Node A                    Node B                    Node C                    M_abc        Abs(M_abc)  
+------------------------------------------------------------
+1    MF                        Mot                       SAL                       -2.095294    2.095294    
+2    DMN                       Mot                       CBL                       1.857952     1.857952    
+3    Mot                       SAL                       CBL                       1.823091     1.823091    
+4    DMN                       Mot                       SAL                       1.456650     1.456650    
+5    FP                        Mot                       SAL                       1.362430     1.362430    
+6    MF                        FP                        Mot                       -1.317612    1.317612    
+7    Mot                       VI                        SAL                       1.237277     1.237277    
+8    MF                        FP                        SAL                       -1.216574    1.216574    
+9    Mot                       SAL                       SC                        1.168507     1.168507    
+10   DMN                       Mot                       SC                        1.099492     1.099492    

@@ -1,0 +1,57 @@
+============================================================
+NORMATIVE PROFILE REPORT: IMAGEN SST
+============================================================
+
+Data Source:       IMAGEN dataset
+Analysis Time:     2026-06-12 11:32:19
+Computation Time:  7.12 seconds
+
+------------------------------------------------------------
+CP TENSOR BARYCENTER COMPONENTS (NON-GAUSSIAN VARIANCE):
+------------------------------------------------------------
+Component 1: lambda = 29.862249 (34.94% variance explained)
+Component 2: lambda = 28.170524 (31.09% variance explained)
+Component 3: lambda = 20.627693 (16.67% variance explained)
+Component 4: lambda = 15.662489 (9.61% variance explained)
+Component 5: lambda = 14.006272 (7.69% variance explained)
+
+------------------------------------------------------------
+STRONGEST ELEMENTS OF BURES-WASSERSTEIN BARYCENTER:
+------------------------------------------------------------
+1. CBL - MF: r = -0.411239
+2. VAs - MF: r = -0.364852
+3. Mot - DMN: r = -0.343246
+4. VI - MF: r = -0.341906
+5. VAs - VII: r = 0.332154
+
+------------------------------------------------------------
+STRONGEST 3-WAY INTERACTIONS (ADJUSTED TRIAD INDEX M_abc):
+------------------------------------------------------------
+Rank Node A                    Node B                    Node C                    M_abc        Abs(M_abc)  
+------------------------------------------------------------
+1    MF                        MF                        MF                        14.926364    14.926364   
+2    DMN                       DMN                       DMN                       9.747191     9.747191    
+3    Mot                       Mot                       Mot                       8.111842     8.111842    
+4    MF                        MF                        Mot                       8.030165     8.030165    
+5    MF                        MF                        CBL                       5.999091     5.999091    
+6    Mot                       Mot                       CBL                       3.973941     3.973941    
+7    MF                        MF                        FP                        -3.518253    3.518253    
+8    DMN                       Mot                       Mot                       3.316094     3.316094    
+9    Mot                       Mot                       VI                        -2.902947    2.902947    
+10   MF                        MF                        SAL                       -2.729673    2.729673    
+
+------------------------------------------------------------
+STRONGEST DISTINCT 3-WAY INTERACTIONS (ALL 3 NODES DIFFERENT):
+------------------------------------------------------------
+Rank Node A                    Node B                    Node C                    M_abc        Abs(M_abc)  
+------------------------------------------------------------
+1    MF                        Mot                       CBL                       2.603569     2.603569    
+2    DMN                       Mot                       CBL                       1.917804     1.917804    
+3    MF                        FP                        SAL                       1.641480     1.641480    
+4    MF                        FP                        VAs                       -1.635172    1.635172    
+5    MF                        DMN                       Mot                       1.610860     1.610860    
+6    MF                        Mot                       SC                        1.540699     1.540699    
+7    Mot                       SC                        CBL                       1.460607     1.460607    
+8    DMN                       Mot                       SC                        1.389031     1.389031    
+9    Mot                       VI                        CBL                       -1.297321    1.297321    
+10   MF                        DMN                       CBL                       1.278445     1.278445    
