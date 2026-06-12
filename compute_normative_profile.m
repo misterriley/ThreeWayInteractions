@@ -282,7 +282,7 @@ if recompute_barycenter
     lollipop_plot_filename = fullfile(output_dir, sprintf('%s_%s_barycenter_lollipop_plot.png', dataset, task_name));
     plot_lollipop(top_vals, lollipop_labels, ...
         sprintf('%s %s: Top %d Highlighted Barycenter Connections', upper(dataset), upper(task_name), n_plot), ...
-        'Correlation Value (r)', lollipop_plot_filename);
+        'Correlation Value (r)', lollipop_plot_filename, [-1, 1]);
     fprintf('Barycenter lollipop plot saved to %s\n', lollipop_plot_filename);
 
     % --- Step 2b: Compute the difference matrix for calculations ---

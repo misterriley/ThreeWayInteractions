@@ -1,4 +1,4 @@
-function plot_lollipop(vals, labels, title_str, xlabel_str, filename)
+function plot_lollipop(vals, labels, title_str, xlabel_str, filename, x_lim)
 % PLOT_LOLLIPOP Generates a horizontal lollipop plot.
 %
 % Inputs:
@@ -7,6 +7,7 @@ function plot_lollipop(vals, labels, title_str, xlabel_str, filename)
 %   title_str  : title of the plot
 %   xlabel_str : label of the x-axis
 %   filename   : full path where the plot image should be saved
+%   x_lim      : (Optional) [xmin, xmax] limits for the x-axis
 
     K = length(vals);
     if K == 0
@@ -47,11 +48,15 @@ function plot_lollipop(vals, labels, title_str, xlabel_str, filename)
     yticklabels(labels(K:-1:1));
     ylim([0.5, K + 0.5]);
     
-    max_abs_val = max(abs(vals));
-    if max_abs_val == 0
-        max_abs_val = 1;
+    if nargin >= 6 && ~isempty(x_lim)
+        xlim(x_lim);
+    else
+        max_abs_val = max(abs(vals));
+        if max_abs_val == 0
+            max_abs_val = 1;
+        end
+        xlim([-max_abs_val - 0.05, max_abs_val + 0.05]);
     end
-    xlim([-max_abs_val - 0.05, max_abs_val + 0.05]);
     
     xlabel(xlabel_str);
     title(title_str);
