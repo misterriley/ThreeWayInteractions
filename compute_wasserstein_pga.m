@@ -203,6 +203,7 @@ bwr_cmap = [r1, g1, b1; r2, g2, b2];
 fprintf('Generating Scree plot...\n');
 fig_scree = figure('Visible', 'off');
 bar(pga_explained(1:min(10, length(pga_explained))), 'FaceColor', [0.15, 0.45, 0.75]);
+ylim([0, 25]);
 ylabel('Percentage of Variance Explained (%)');
 xlabel('Principal Geodesic Component');
 title(sprintf('%s %s: PGA Explained Variance (Top 10)', upper(dataset), upper(task_name)));
