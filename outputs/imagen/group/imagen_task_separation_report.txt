@@ -1,0 +1,71 @@
+============================================================
+TASK SEPARATION ANALYSIS REPORT: IMAGEN
+============================================================
+
+Data Source:       imagen dataset
+Analysis Time:     2026-06-22 10:53:44
+Number of Tasks:   2
+Tasks Compared:    MID, SST
+Bootstraps/Task:   100
+DF (Between/Within): 1 / 198
+
+------------------------------------------------------------
+TOP 10 FC CONNECTIONS SEPARATING TASK CONDITIONS:
+------------------------------------------------------------
+Rank Connection                F-value      df_between   p-value     
+------------------------------------------------------------
+1    VI - VII                  82528.96     1            < 0.0001    
+2    FP - DMN                  80736.74     1            < 0.0001    
+3    DMN - VAs                 53598.73     1            < 0.0001    
+4    VAs - SAL                 41484.02     1            < 0.0001    
+5    VII - SAL                 41313.60     1            < 0.0001    
+6    DMN - SAL                 29832.58     1            < 0.0001    
+7    FP - SAL                  26260.10     1            < 0.0001    
+8    FP - VI                   25300.16     1            < 0.0001    
+9    DMN - CBL                 24516.08     1            < 0.0001    
+10   MF - DMN                  18649.71     1            < 0.0001    
+------------------------------------------------------------
+
+------------------------------------------------------------
+TASK-SPECIFIC BREAKDOWN (MEAN AND STD OF BOOTSTRAP VALUES):
+------------------------------------------------------------
+Rank 1: VI - VII (F = 82528.96, p = < 0.0001)
+  - MID         : mean = -0.0147, std = 0.0043
+  - SST         : mean =  0.1420, std = 0.0034
+
+Rank 2: FP - DMN (F = 80736.74, p = < 0.0001)
+  - MID         : mean =  0.0676, std = 0.0037
+  - SST         : mean = -0.0768, std = 0.0034
+
+Rank 3: DMN - VAs (F = 53598.73, p = < 0.0001)
+  - MID         : mean = -0.2145, std = 0.0028
+  - SST         : mean = -0.3173, std = 0.0034
+
+Rank 4: VAs - SAL (F = 41484.02, p = < 0.0001)
+  - MID         : mean = -0.1226, std = 0.0034
+  - SST         : mean = -0.0186, std = 0.0038
+
+Rank 5: VII - SAL (F = 41313.60, p = < 0.0001)
+  - MID         : mean = -0.2860, std = 0.0031
+  - SST         : mean = -0.1904, std = 0.0036
+
+Rank 6: DMN - SAL (F = 29832.58, p = < 0.0001)
+  - MID         : mean = -0.2281, std = 0.0033
+  - SST         : mean = -0.3096, std = 0.0034
+
+Rank 7: FP - SAL (F = 26260.10, p = < 0.0001)
+  - MID         : mean = -0.0196, std = 0.0041
+  - SST         : mean =  0.0704, std = 0.0037
+
+Rank 8: FP - VI (F = 25300.16, p = < 0.0001)
+  - MID         : mean = -0.2706, std = 0.0028
+  - SST         : mean = -0.3318, std = 0.0026
+
+Rank 9: DMN - CBL (F = 24516.08, p = < 0.0001)
+  - MID         : mean = -0.3135, std = 0.0025
+  - SST         : mean = -0.2572, std = 0.0025
+
+Rank 10: MF - DMN (F = 18649.71, p = < 0.0001)
+  - MID         : mean =  0.3199, std = 0.0031
+  - SST         : mean =  0.2608, std = 0.0030
+

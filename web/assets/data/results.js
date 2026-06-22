@@ -2204,6 +2204,108 @@ const RESULTS_DATA = {
           "pct_variance": 0.4227981041403618
         }
       ]
+    },
+    "group": {
+      "metadata": {
+        "data_source": "hcp dataset",
+        "analysis_time": "2026-06-22 10:52:51",
+        "num_tasks": 9,
+        "bootstraps": 100,
+        "df_between": 8,
+        "df_within": 891
+      },
+      "top_connections": [
+        {
+          "rank": 1,
+          "connection": "DMN - Mot",
+          "node_a": "DMN",
+          "node_b": "Mot",
+          "f_val": 142991.36,
+          "df_between": 8,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 2,
+          "connection": "VI - VAs",
+          "node_a": "VI",
+          "node_b": "VAs",
+          "f_val": 110604.65,
+          "df_between": 8,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 3,
+          "connection": "Mot - VAs",
+          "node_a": "Mot",
+          "node_b": "VAs",
+          "f_val": 98124.66,
+          "df_between": 8,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 4,
+          "connection": "DMN - VII",
+          "node_a": "DMN",
+          "node_b": "VII",
+          "f_val": 83267.09,
+          "df_between": 8,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 5,
+          "connection": "DMN - VAs",
+          "node_a": "DMN",
+          "node_b": "VAs",
+          "f_val": 76895.25,
+          "df_between": 8,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 6,
+          "connection": "DMN - VI",
+          "node_a": "DMN",
+          "node_b": "VI",
+          "f_val": 73172.77,
+          "df_between": 8,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 7,
+          "connection": "VII - VAs",
+          "node_a": "VII",
+          "node_b": "VAs",
+          "f_val": 69253.7,
+          "df_between": 8,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 8,
+          "connection": "MF - VAs",
+          "node_a": "MF",
+          "node_b": "VAs",
+          "f_val": 69009.95,
+          "df_between": 8,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 9,
+          "connection": "MF - VII",
+          "node_a": "MF",
+          "node_b": "VII",
+          "f_val": 51252.98,
+          "df_between": 8,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 10,
+          "connection": "MF - SAL",
+          "node_a": "MF",
+          "node_b": "SAL",
+          "f_val": 50951.59,
+          "df_between": 8,
+          "p_val": "< 0.0001"
+        }
+      ]
     }
   },
   "imagen": {
@@ -2694,6 +2796,108 @@ const RESULTS_DATA = {
           "m_abc": 1.27844493829685,
           "abs_m_abc": 1.27844493829685,
           "pct_variance": 0.2348429142820295
+        }
+      ]
+    },
+    "group": {
+      "metadata": {
+        "data_source": "imagen dataset",
+        "analysis_time": "2026-06-22 10:53:44",
+        "num_tasks": 2,
+        "bootstraps": 100,
+        "df_between": 1,
+        "df_within": 198
+      },
+      "top_connections": [
+        {
+          "rank": 1,
+          "connection": "VI - VII",
+          "node_a": "VI",
+          "node_b": "VII",
+          "f_val": 82528.96,
+          "df_between": 1,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 2,
+          "connection": "FP - DMN",
+          "node_a": "FP",
+          "node_b": "DMN",
+          "f_val": 80736.74,
+          "df_between": 1,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 3,
+          "connection": "DMN - VAs",
+          "node_a": "DMN",
+          "node_b": "VAs",
+          "f_val": 53598.73,
+          "df_between": 1,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 4,
+          "connection": "VAs - SAL",
+          "node_a": "VAs",
+          "node_b": "SAL",
+          "f_val": 41484.02,
+          "df_between": 1,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 5,
+          "connection": "VII - SAL",
+          "node_a": "VII",
+          "node_b": "SAL",
+          "f_val": 41313.6,
+          "df_between": 1,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 6,
+          "connection": "DMN - SAL",
+          "node_a": "DMN",
+          "node_b": "SAL",
+          "f_val": 29832.58,
+          "df_between": 1,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 7,
+          "connection": "FP - SAL",
+          "node_a": "FP",
+          "node_b": "SAL",
+          "f_val": 26260.1,
+          "df_between": 1,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 8,
+          "connection": "FP - VI",
+          "node_a": "FP",
+          "node_b": "VI",
+          "f_val": 25300.16,
+          "df_between": 1,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 9,
+          "connection": "DMN - CBL",
+          "node_a": "DMN",
+          "node_b": "CBL",
+          "f_val": 24516.08,
+          "df_between": 1,
+          "p_val": "< 0.0001"
+        },
+        {
+          "rank": 10,
+          "connection": "MF - DMN",
+          "node_a": "MF",
+          "node_b": "DMN",
+          "f_val": 18649.71,
+          "df_between": 1,
+          "p_val": "< 0.0001"
         }
       ]
     }

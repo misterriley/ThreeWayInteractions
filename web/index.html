@@ -398,7 +398,59 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <!-- Group Analysis View Container -->
+            <div class="group-content-container" id="group-analysis-container" style="display: none; padding: 24px;">
+                <div class="grid-2col mb-4">
+                    <!-- F-Values Carpet Plot Card -->
+                    <div class="card glass-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Task Separation F-Values</h3>
+                            <p class="card-subtitle">One-way ANOVA F-statistics showing edge-wise task separation</p>
+                        </div>
+                        <div class="card-body plot-body">
+                            <div class="img-container">
+                                <img id="img-group-carpet" src="" alt="Task Separation F-Values Carpet Plot">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top 10 Differentiating Connections Table Card -->
+                    <div class="card glass-card table-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Top 10 Task-Differentiating Connections</h3>
+                            <p class="card-subtitle">Click a row to visualize its bootstrap distribution below</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table interactive-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Rank</th>
+                                            <th>Connection</th>
+                                            <th class="num-col">F-value</th>
+                                            <th class="num-col">p-value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="group-table-body">
+                                        <!-- Loaded dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Distribution Plots Grid -->
+                <div class="group-dist-section-header" style="margin-top: 32px; margin-bottom: 16px;">
+                    <h2 style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 600; color: var(--text-primary);">Top 5 Distinguishing Connections Distributions</h2>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px;">Fitted Gaussian distributions and individual bootstrap runs for the top 5 task-separating connections</p>
+                </div>
+                
+                <div class="grid-2col" id="group-dist-plots-grid">
+                    <!-- Loaded dynamically via app.js -->
+                </div>
             </div>
         </main>
     </div>
