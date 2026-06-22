@@ -176,7 +176,8 @@ def prepare_web_data():
                 'cp_components': cp_components,
                 'barycenter_elements': barycenter_elements,
                 'general_triads': general_triads,
-                'distinct_triads': distinct_triads
+                'distinct_triads': distinct_triads,
+                'raw_report': content
             }
             
     # Process group/cohort-level analysis data
@@ -268,7 +269,8 @@ def prepare_web_data():
                     
         results_data[cohort]['group'] = {
             'metadata': metadata,
-            'top_connections': top_connections
+            'top_connections': top_connections,
+            'raw_report': content
         }
         
     # Write as JS file to make it fully standalone (double-clickable index.html without CORS issues)

@@ -252,7 +252,13 @@ document.addEventListener('DOMContentLoaded', () => {
             cpContainer.innerHTML = '<div style="grid-column: span 5; text-align: center; color: var(--text-muted); padding: 12px;">No CP components data available.</div>';
         }
 
-        // E. Populate Triads (both tables)
+        // E. Update Raw Report Text
+        const reportEl = document.getElementById('report-text-content');
+        if (reportEl) {
+            reportEl.textContent = taskData.raw_report || 'No report found.';
+        }
+
+        // F. Populate Triads (both tables)
         renderTriadsTable();
     }
 
@@ -415,6 +421,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } else {
             groupTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No task separation results found</td></tr>';
+        }
+
+        // Update Group Raw Report Text
+        const groupReportEl = document.getElementById('group-report-text-content');
+        if (groupReportEl) {
+            groupReportEl.textContent = groupData.raw_report || 'No report found.';
         }
     }
 
