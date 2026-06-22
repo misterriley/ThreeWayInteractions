@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentCohort = 'hcp';
     let currentTask = 'emotion';
+    let currentView = 'task';
     let searchQuery = '';
 
     // Helper to generate task navigation item
@@ -66,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         li.innerHTML = `${iconHtml}<span>${taskLabels[task] || task}</span>`;
         
         li.addEventListener('click', () => {
-            if (currentCohort === cohort && currentTask === task) return;
+            if (currentCohort === cohort && currentTask === task && currentView === 'task') return;
             
             // Update active states in both lists
             document.querySelectorAll('.task-item').forEach(item => item.classList.remove('active'));
@@ -75,7 +76,29 @@ document.addEventListener('DOMContentLoaded', () => {
             // Switch task and cohort
             currentCohort = cohort;
             currentTask = task;
+            currentView = 'task';
             loadTaskData(currentCohort, currentTask);
+        });
+        
+        return li;
+    }
+
+    // Helper to generate group navigation item
+    function createGroupItem(cohort) {
+        const li = document.createElement('li');
+        li.className = `task-item group-nav-item${cohort === currentCohort && currentView === 'group' ? ' active' : ''}`;
+        li.innerHTML = `<i class="fa-solid fa-ranking-stars nav-icon"></i><span>Task Differentiation</span>`;
+        
+        li.addEventListener('click', () => {
+            if (currentCohort === cohort && currentView === 'group') return;
+            
+            // Update active states in both lists
+            document.querySelectorAll('.task-item').forEach(item => item.classList.remove('active'));
+            li.classList.add('active');
+            
+            currentCohort = cohort;
+            currentView = 'group';
+            loadGroupData(currentCohort);
         });
         
         return li;
@@ -91,10 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
     hcpTasks.forEach(task => {
         hcpListEl.appendChild(createTaskItem('hcp', task));
     });
+    hcpListEl.appendChild(createGroupItem('hcp'));
 
     imagenTasks.forEach(task => {
         imagenListEl.appendChild(createTaskItem('imagen', task));
     });
+    imagenListEl.appendChild(createGroupItem('imagen'));
 
     // 4. Initialize Tabs System
     const tabBtns = document.querySelectorAll('.tab-btn');
@@ -139,6 +164,11 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error(`No task data found for: ${taskName} in cohort ${cohortName}`);
             return;
         }
+
+        // Show task view containers, hide group container
+        document.querySelector('.tabs-container').style.display = 'flex';
+        document.querySelector('.tab-content-container').style.display = 'block';
+        document.getElementById('group-analysis-container').style.display = 'none';
 
         // A. Update Header Title & Subtitle
         document.getElementById('current-task-title').textContent = taskLabels[taskName] || taskName;
@@ -295,6 +325,96 @@ document.addEventListener('DOMContentLoaded', () => {
             const totalDist = (taskData.distinct_triads || []).length;
             searchMeta.textContent = `Showing top ${totalGen} overall and top ${totalDist} distinct interactions.`;
             searchMeta.style.color = 'var(--text-secondary)';
+        }
+    }
+
+    // Group analysis loading function
+    function loadGroupData(cohortName) {
+        const cohortData = RESULTS_DATA[cohortName];
+        if (!cohortData || !cohortData.group) {
+            console.error(`No group data found for cohort: ${cohortName}`);
+            return;
+        }
+        
+        const groupData = cohortData.group;
+
+        // Hide task view containers, show group container
+        document.querySelector('.tabs-container').style.display = 'none';
+        document.querySelector('.tab-content-container').style.display = 'none';
+        document.getElementById('group-analysis-container').style.display = 'block';
+
+        // Update Header Title & Subtitle
+        document.getElementById('current-task-title').textContent = `${cohortName.toUpperCase()} Task Differentiation`;
+        document.querySelector('.subtitle').textContent = `F-statistics comparing functional connectivity across task conditions`;
+        
+        // Update Metadata Container
+        const metaContainer = document.getElementById('metadata-container');
+        metaContainer.innerHTML = `
+            <div class="meta-pill" title="Data Source">
+                <i class="fa-solid fa-database"></i>
+                <span>Source: <span class="val">${groupData.metadata.data_source || (cohortName.toUpperCase() + ' Cohort')}</span></span>
+            </div>
+            <div class="meta-pill" title="Analysis Timestamp">
+                <i class="fa-solid fa-calendar-day"></i>
+                <span>Analyzed: <span class="val">${groupData.metadata.analysis_time || 'N/A'}</span></span>
+            </div>
+            <div class="meta-pill" title="Degrees of Freedom (Between / Within)">
+                <i class="fa-solid fa-calculator"></i>
+                <span>DF: <span class="val">${groupData.metadata.df_between} / ${groupData.metadata.df_within}</span></span>
+            </div>
+        `;
+
+        // Update Carpet Plot Image
+        document.getElementById('img-group-carpet').src = `assets/images/group/${cohortName}_task_separation_f_values_carpet_plot.png`;
+
+        // Populate Top 10 Table
+        const groupTableBody = document.getElementById('group-table-body');
+        groupTableBody.innerHTML = '';
+        
+        if (groupData.top_connections && groupData.top_connections.length > 0) {
+            groupData.top_connections.forEach((conn) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${conn.rank}</td>
+                    <td><strong>${conn.node_a}</strong> - <strong>${conn.node_b}</strong></td>
+                    <td class="num-col font-bold">${conn.f_val.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td class="num-col">${conn.p_val}</td>
+                `;
+                groupTableBody.appendChild(tr);
+            });
+            
+            // Populate Top 5 Distribution Plots Grid
+            const gridEl = document.getElementById('group-dist-plots-grid');
+            gridEl.innerHTML = '';
+            
+            const top5 = groupData.top_connections.slice(0, 5);
+            top5.forEach((conn, index) => {
+                const card = document.createElement('div');
+                card.className = 'card glass-card';
+                if (index === 4) {
+                    card.style.gridColumn = 'span 2'; // Center/span the 5th card for visual balance
+                }
+                
+                const rankStr = String(conn.rank).padStart(2, '0');
+                const connName = `${conn.node_a}_${conn.node_b}`;
+                const imgName = `${cohortName}_sep_plot_rank${rankStr}_${connName}.png`;
+                const fValStr = conn.f_val.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h3 class="card-title">Rank ${conn.rank}: ${conn.connection}</h3>
+                        <p class="card-subtitle">F-value = ${fValStr} (p-value: ${conn.p_val})</p>
+                    </div>
+                    <div class="card-body plot-body flex-center" style="padding: 16px 0;">
+                        <div class="img-container" style="max-height: 400px; width: 100%; display: flex; justify-content: center;">
+                            <img src="assets/images/group/${imgName}" alt="Distribution Plot for ${conn.connection}" style="max-height: 380px; width: auto; object-fit: contain;">
+                        </div>
+                    </div>
+                `;
+                gridEl.appendChild(card);
+            });
+        } else {
+            groupTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No task separation results found</td></tr>';
         }
     }
 

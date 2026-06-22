@@ -179,6 +179,98 @@ def prepare_web_data():
                 'distinct_triads': distinct_triads
             }
             
+    # Process group/cohort-level analysis data
+    for cohort in cohorts.keys():
+        group_output_dir = os.path.join(outputs_dir, cohort, 'group')
+        report_path = os.path.join(group_output_dir, f'{cohort}_task_separation_report.txt')
+        
+        if not os.path.exists(report_path):
+            print(f"Group report for {cohort} not found at {report_path}. Skipping group analysis...")
+            continue
+            
+        print(f"Processing group task separation for {cohort}...")
+        
+        # Create destination image directory
+        dest_group_img_dir = os.path.join(web_images_dir, 'group')
+        os.makedirs(dest_group_img_dir, exist_ok=True)
+        
+        # Copy group carpet plot
+        carpet_name = f'{cohort}_task_separation_f_values_carpet_plot.png'
+        src_carpet = os.path.join(group_output_dir, carpet_name)
+        if os.path.exists(src_carpet):
+            shutil.copy(src_carpet, os.path.join(dest_group_img_dir, carpet_name))
+            
+        # Copy all distribution plots
+        for filename in os.listdir(group_output_dir):
+            if filename.startswith(f'{cohort}_sep_plot_rank') and filename.endswith('.png'):
+                shutil.copy(os.path.join(group_output_dir, filename), os.path.join(dest_group_img_dir, filename))
+                
+        # Parse group report
+        with open(report_path, 'r') as f:
+            content = f.read()
+            
+        metadata = {}
+        # Parse data source
+        match_ds = re.search(r"Data Source:\s*(.*)", content)
+        if match_ds:
+            metadata['data_source'] = match_ds.group(1).strip()
+            
+        # Parse analysis time
+        match_at = re.search(r"Analysis Time:\s*(.*)", content)
+        if match_at:
+            metadata['analysis_time'] = match_at.group(1).strip()
+            
+        # Parse number of tasks
+        match_nt = re.search(r"Number of Tasks:\s*(\d+)", content)
+        if match_nt:
+            metadata['num_tasks'] = int(match_nt.group(1))
+            
+        # Parse bootstraps per task
+        match_bt = re.search(r"Bootstraps/Task:\s*(\d+)", content)
+        if match_bt:
+            metadata['bootstraps'] = int(match_bt.group(1))
+            
+        # Parse degrees of freedom
+        match_df = re.search(r"DF \(Between/Within\):\s*(\d+)\s*/\s*(\d+)", content)
+        if match_df:
+            metadata['df_between'] = int(match_df.group(1))
+            metadata['df_within'] = int(match_df.group(2))
+            
+        # Parse top 10 task separating connections table
+        top_connections = []
+        table_sec = re.search(
+            r"Rank\s+Connection\s+F-value\s+df_between\s+p-value\s*\n------------------------------------------------------------\n(.*?)\n------------------------------------------------------------",
+            content, re.DOTALL
+        )
+        if table_sec:
+            lines = table_sec.group(1).strip().split('\n')
+            for line in lines:
+                m = re.match(r"(\d+)\s+([\w\s-]+)\s+([\d.-]+)\s+(\d+)\s+(.*)", line.strip())
+                if m:
+                    rank_num = int(m.group(1))
+                    conn_name = m.group(2).strip()
+                    f_val = float(m.group(3))
+                    df_b = int(m.group(4))
+                    p_val_str = m.group(5).strip()
+                    
+                    # Split connection name
+                    net1, net2 = [x.strip() for x in conn_name.split('-')]
+                    
+                    top_connections.append({
+                        'rank': rank_num,
+                        'connection': conn_name,
+                        'node_a': net1,
+                        'node_b': net2,
+                        'f_val': f_val,
+                        'df_between': df_b,
+                        'p_val': p_val_str
+                    })
+                    
+        results_data[cohort]['group'] = {
+            'metadata': metadata,
+            'top_connections': top_connections
+        }
+        
     # Write as JS file to make it fully standalone (double-clickable index.html without CORS issues)
     js_content = f"const RESULTS_DATA = {json.dumps(results_data, indent=2)};"
     with open(os.path.join(web_data_dir, 'results.js'), 'w') as f:
