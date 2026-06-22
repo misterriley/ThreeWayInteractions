@@ -344,6 +344,23 @@ if fid ~= -1
             k, unique_networks(a), unique_networks(b), unique_networks(c), val, abs_val);
     end
     
+    % Section: 3D Coskewness vs 2D Connectivity Analysis Comparison
+    fprintf(fid, '\n------------------------------------------------------------\n');
+    fprintf(fid, 'WHAT CO-SKEWNESS CAPTURES BEYOND 2D FUNCTIONAL CONNECTIVITY:\n');
+    fprintf(fid, '------------------------------------------------------------\n');
+    fprintf(fid, 'A traditional 2D functional connectivity analysis (covariance/correlation) only\n');
+    fprintf(fid, 'measures the time-averaged linear coupling between pairs of brain regions.\n');
+    fprintf(fid, 'By contrast, the 3D coskewness tensor captures third-order moments that characterize:\n');
+    fprintf(fid, '1. Dynamic Gating / State-Dependent Coupling: How the communication link between\n');
+    fprintf(fid, '   two regions (A and B) is gated or modulated by the state of a third region (C).\n');
+    fprintf(fid, '   For example, a high activity level in region C might facilitate or inhibit the\n');
+    fprintf(fid, '   functional coupling between regions A and B.\n');
+    fprintf(fid, '2. Non-Gaussian Signal Fluctuations: Deviations from Gaussianity that represent\n');
+    fprintf(fid, '   brief, non-linear bursts of synchronization and neural information transfer, which\n');
+    fprintf(fid, '   are completely averaged out and invisible to second-order covariance metrics.\n');
+    fprintf(fid, '3. Synergistic Cross-Talk: The adjusted triad index M_abc highlights combinations\n');
+    fprintf(fid, '   where regions coordinate collectively, rather than through independent pairwise paths.\n');
+    
     fclose(fid);
     fprintf('Saved summary report to %s\n', report_filename);
 else

@@ -18,9 +18,9 @@ end
 
 % Option flags:
 %   Set to true to recompute, false to load existing saved results.
-recompute_fc_matrices = true;
-recompute_barycenter  = true;
-recompute_coskewness  = true;
+recompute_fc_matrices = false;
+recompute_barycenter  = false;
+recompute_coskewness  = false;
 
 fprintf('Starting normative profile pipeline for dataset: %s\n', upper(dataset));
 fprintf('Tasks to process: %s\n\n', strjoin(tasks, ', '));
