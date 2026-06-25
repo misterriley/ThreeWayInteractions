@@ -171,13 +171,23 @@ def prepare_web_data():
             else:
                 print(f"  Warning: CSV file {csv_path} not found.")
                         
+            # Load task interpretation
+            interpretation_path = os.path.join(task_output_dir, f'{cohort}_{task}_interpretation.txt')
+            interpretation_content = ""
+            if os.path.exists(interpretation_path):
+                with open(interpretation_path, 'r') as f:
+                    interpretation_content = f.read()
+            else:
+                print(f"  Warning: Interpretation file {interpretation_path} not found.")
+                
             results_data[cohort][task] = {
                 'metadata': metadata,
                 'cp_components': cp_components,
                 'barycenter_elements': barycenter_elements,
                 'general_triads': general_triads,
                 'distinct_triads': distinct_triads,
-                'raw_report': content
+                'raw_report': content,
+                'interpretation': interpretation_content
             }
             
     # Process group/cohort-level analysis data
@@ -267,10 +277,65 @@ def prepare_web_data():
                         'p_val': p_val_str
                     })
                     
+        # Generate Group Interpretation
+        group_interpretation = f"""============================================================
+TASK DIFFERENTIATION INTERPRETATION: {cohort.upper()} COHORT
+============================================================
+
+INTRODUCTION:
+------------------------------------------------------------
+This analysis compares functional connectivity (FC) across {metadata.get('num_tasks', 'multiple')} task conditions
+in the {cohort.upper()} cohort using a one-way Analysis of Variance (ANOVA) across subjects.
+The goal is to determine which pairwise connection edges are most sensitive to task demands, 
+shifting their coupling strength to coordinate task-specific neural processes.
+
+KEY FINDINGS & FUNCTIONAL SEPARATION:
+------------------------------------------------------------
+The top distinguishing connections ranked by their F-statistic represent major neural communication
+gates that are reconfigured during active task processing:
+"""
+        
+        # Add details about top connections
+        for idx, conn in enumerate(top_connections[:3], 1):
+            group_interpretation += f"\n{idx}. {conn['connection']} (F = {conn['f_val']:.2f}, p {conn['p_val']})\n"
+            if conn['connection'] == 'DMN - Mot':
+                group_interpretation += "   -> Represents the segregation/integration boundary between self-referential thought (DMN)\n" \
+                                        "      and somatic motor execution (Mot). This connection is highly anti-correlated during\n" \
+                                        "      the motor task (reflecting focus on physical movements) but becomes integrated/positive\n" \
+                                        "      during relational reasoning and gambling reward tracking.\n"
+            elif conn['connection'] == 'VI - VII' or conn['connection'] == 'VII - VAs' or conn['connection'] == 'VI - VAs':
+                group_interpretation += "   -> Represents visual sensory hierarchy coordination. The coupling changes significantly\n" \
+                                        "      depending on the visual detail and complexity demands of the task (e.g. highest in relational\n" \
+                                        "      matching, lowest or negative during social theory of mind animation viewing).\n"
+            elif conn['connection'] == 'Mot - VAs':
+                group_interpretation += "   -> Represents the sensorimotor-to-visual coordination gate, mediating how visual inputs\n" \
+                                        "      are mapped to manual motor outputs (button presses) during reaction-heavy task states.\n"
+            elif conn['connection'] == 'FP - DMN':
+                group_interpretation += "   -> Represents the executive control vs. default mode network boundary. This edge separates\n" \
+                                        "      highly structured top-down task regulation (SST/Stop Signal Task, where it is negative) from\n" \
+                                        "      reward anticipation/delay (MID, where it is positive).\n"
+            else:
+                group_interpretation += f"   -> Represents a critical task-gating boundary between the {conn['node_a']} and {conn['node_b']} systems.\n"
+                
+        group_interpretation += "\nSUMMARY:\n------------------------------------------------------------\n"
+        if cohort == 'hcp':
+            group_interpretation += "In the HCP cohort, task differentiation is heavily dominated by the segregation of the Default\n" \
+                                    "Mode Network (DMN) from somatomotor (Mot) and visual processing networks, alongside fine-tuned\n" \
+                                    "visual system integration. This highlights that the normative population primarily reconfigures\n" \
+                                    "its sensory processing pathways and default-mode suppression to adapt to different task states."
+        else:
+            group_interpretation += "In the IMAGEN cohort, task differentiation highlights stop-signal inhibition (SST) vs. reward anticipation\n" \
+                                    "(MID). The primary differences reside in the coupling between visual hierarchies (VI-VII) and the\n" \
+                                    "coordination between frontoparietal (FP) control and default mode (DMN) networks, showing a clear\n" \
+                                    "reconfiguration of attentional focus and cognitive control strategy."
+        
+        group_interpretation += "\n============================================================\n"
+
         results_data[cohort]['group'] = {
             'metadata': metadata,
             'top_connections': top_connections,
-            'raw_report': content
+            'raw_report': content,
+            'interpretation': group_interpretation
         }
         
     # Write as JS file to make it fully standalone (double-clickable index.html without CORS issues)

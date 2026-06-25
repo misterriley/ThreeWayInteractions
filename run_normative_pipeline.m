@@ -38,6 +38,9 @@ for t = 1:length(tasks)
         
         % Run Coskewness Triad Analysis using 4D CP Tensor Barycenter
         compute_coskewness_triads(dataset, task_name, 5, n_lollipops);
+        
+        % Generate beautiful neurofunctional interpretation
+        generate_task_interpretation(dataset, task_name);
     catch ME
         fprintf('ERROR processing task %s: %s\n', task_name, ME.message);
     end
