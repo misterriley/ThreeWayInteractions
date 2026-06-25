@@ -252,10 +252,10 @@ document.addEventListener('DOMContentLoaded', () => {
             cpContainer.innerHTML = '<div style="grid-column: span 5; text-align: center; color: var(--text-muted); padding: 12px;">No CP components data available.</div>';
         }
 
-        // E. Update Raw Report Text
+        // E. Update Interpretation Text
         const reportEl = document.getElementById('report-text-content');
         if (reportEl) {
-            reportEl.textContent = taskData.raw_report || 'No report found.';
+            reportEl.textContent = taskData.interpretation || 'No interpretation found.';
         }
 
         // F. Populate Triads (both tables)
@@ -423,10 +423,10 @@ document.addEventListener('DOMContentLoaded', () => {
             groupTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No task separation results found</td></tr>';
         }
 
-        // Update Group Raw Report Text
+        // Update Group Interpretation Text
         const groupReportEl = document.getElementById('group-report-text-content');
         if (groupReportEl) {
-            groupReportEl.textContent = groupData.raw_report || 'No report found.';
+            groupReportEl.textContent = groupData.interpretation || 'No interpretation found.';
         }
     }
 
